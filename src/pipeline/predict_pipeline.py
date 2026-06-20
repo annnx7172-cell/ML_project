@@ -1,6 +1,7 @@
 import sys
 import os
 import pandas as pd
+import numpy as np
 from src.exception import CustomException
 from src.utils import load_object
 
@@ -19,6 +20,8 @@ class PredictPipeline:
             print("After Loading")
             data_scaled=preprocessor.transform(features)
             preds=model.predict(data_scaled)
+            preds = np.clip(preds, 0, 100)  # ensure prediction stays within valid score range
+           
             return preds
         
         except Exception as e:
